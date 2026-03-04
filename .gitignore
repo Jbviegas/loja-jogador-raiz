@@ -1,0 +1,51 @@
+############################
+# SISTEMA OPERACIONAL
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# IDE / EDITORES
+############################
+.vscode/
+.idea/
+
+############################
+# LOGS
+############################
+*.log
+logs/
+
+############################
+# CONFIGURAÇÕES SENSÍVEIS
+############################
+/config.php
+/pagamentos/config_pagamentos/config.php
+
+############################
+# VARIÁVEIS DE AMBIENTE
+############################
+.env
+.env.*
+!.env.example
+
+############################
+# UPLOADS / ARQUIVOS DINÂMICOS
+############################
+uploads/*
+!uploads/.gitkeep
+
+tmp/
+temp/
+
+############################
+# CACHE / BUILD
+############################
+cache/
+dist/
+build/
+
+############################
+# GIT (SEGURANÇA)
+############################
+**/.git

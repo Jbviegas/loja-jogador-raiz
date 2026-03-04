@@ -1,0 +1,284 @@
+<?php
+session_start();
+ob_start();
+//conexao 
+require_once('../sheep_core/config.php');
+//chama o efi banco digital
+require_once('./vendor/autoload.php');
+
+use Gerencianet\Exception\GerencianetException;
+use Gerencianet\Gerencianet;
+
+$sheep = new Ler();
+
+$pagamento = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+//para cadastrar cliente na loja 
+$cadastrarUsuario = new Criar();
+//cria fatura de compra
+$cadastrarFatura = new Criar();
+//criar minhas compras
+$cadastrarMinhasCompras = new Criar();
+
+//data atual
+$dataCartao = date('Y-m-d');
+$dataDia = date('d');
+$dataMes = date('m');
+$dataAno = date('Y');
+
+//token de proteção do site 
+$tokenPagamentoSistema = filter_input(INPUT_GET, 'tokenPagamento', FILTER_SANITIZE_SPECIAL_CHARS);
+if ($_SESSION['token_pagamentos'] != $tokenPagamentoSistema):
+    header("Location: " . HOME);
+    exit();
+endif;
+
+if ($tokenPagamentoSistema == null):
+    header("Location: " . HOME);
+    exit();
+endif;
+
+if ($_SESSION['token_pagamentos'] === $tokenPagamentoSistema):
+    null;
+else:
+    header("Location: " . HOME);
+    exit();
+endif;
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    //ler para logar
+    $ler = new Ler();
+    $ler->Leitura('usuarios', "WHERE id = :id", "id={$_SESSION['sheep_user']['id']}");
+    if ($ler->getResultado()) {
+        foreach ($ler->getResultado() as $cliente);
+        $cliente = (object) $cliente;
+    }
+
+    //Formatação do valor
+    $pagamento['total_valor'] = Formata::vr($pagamento['total_valor']); // 76,88
+    $valorOriginal = $pagamento['total_valor'];
+    $valorModificado = str_replace([",", "."], "", $valorOriginal); // 7688
+    $valorFinal = (int) $valorModificado; // 7688
+
+    $cpf = preg_replace('/[^0-9]/', '', $cliente->cpf);
+    $fone = preg_replace('/[^0-9]/', '', $cliente->whatsapp);
+    $cep = preg_replace('/[^0-9]/', '', $cliente->cep);
+    //$valor = $pagamento['total_valor'];
+
+    //ESTADO DO CLIENTE
+    $sheep->Leitura('app_estados', "WHERE estado_id = :idEstado", "idEstado={$cliente->estado}");
+    $estadoDoCliente = Formata::Resultado($sheep);
+    if ($estadoDoCliente) {
+        foreach ($sheep->getResultado() as $estado);
+        $estado = (object) $estado;
+    }
+
+
+    //CIDADE DO CLIENTE
+    $sheep->Leitura('app_cidades', "WHERE cidade_id = :idCidade", "idCidade={$cliente->cidade}");
+    $cidadeDoCliente = Formata::Resultado($sheep);
+    if ($cidadeDoCliente) {
+        foreach ($sheep->getResultado() as $cidade);
+        $cidade = (object) $cidade;
+    }
+
+    // LEITURA DO CARRINHO
+    $contaCarrinho = 0;
+    $items = []; // Inicializa array de itens
+
+    $sheep->Leitura('carrinho', "WHERE id_sessao = :idSes AND dia = :dia AND mes = :mes AND ano = :ano", "idSes={$pagamento['id_sessao']}&dia={$dataDia}&mes={$dataMes}&ano={$dataAno}");
+    $carrinhoDoCliente = Formata::Resultado($sheep);
+
+    if ($carrinhoDoCliente) {
+        $contaCarrinho = $sheep->getContaLinhas();
+
+        foreach ($sheep->getResultado() as $carrinho) {
+            $carrinho = (object) $carrinho;
+
+            // Remover pontos e vírgulas e converter para inteiro
+            $valorFormatado = (int) str_replace([',', '.'], '', $carrinho->valor_total);
+
+            // Adiciona cada item ao array de itens
+            $items[] = [
+                'name' => $carrinho->titulo,
+                'amount' => intval($carrinho->qtde), // Quantidade do item
+                'value' => $valorFormatado, // Valor formatado sem vírgulas
+            ];
+        }
+    }
+
+    // CONEXÃO COM BANCO EFI NO NOSSO SISTEMA
+    include_once __DIR__ . '/config_pagamentos/config.php';
+
+    $paymentToken = $pagamento['payment_token'];
+
+    $options = [
+        'client_id' => $clientId,
+        'client_secret' => $clientSecret,
+        'sandbox' => $statusBanco,
+    ];
+
+    // Se houver mais de um item, adiciona "+x" ao nome do primeiro item
+    if ($contaCarrinho > 1) {
+        $items[0]['name'] .= " +$contaCarrinho";
+    }
+
+    // Enviar `$items` para pagamento
+
+
+
+    //URL DE RETORNO 
+    //$urlRetorno =  HOME . '/pagamentos/retorno.php';
+    $urlRetorno = 'https://maykonsilveira.com.br';
+
+    //url de notificação
+    $metadata = ["notification_url" => $urlRetorno];
+
+    $costumer = [
+        'name' => $pagamento['nome'] . ' ' . $pagamento['sobrenome'],
+        'cpf' => $cpf,
+        'phone_number' => $fone,
+        'email' => $pagamento['email'],
+        'birth' => date('Y-m-d', strtotime($pagamento['nascimento']))
+    ];
+
+    $billingAddress = [
+        'street' => $pagamento['endereco'],
+        'number' => $pagamento['numero'] ? $pagamento['numero'] : 0,
+        'neighborhood' => $pagamento['bairro'],
+        'zipcode' => $cep,
+        'city' => $cidade->cidade_nome,
+        'state' => $estado->estado_uf
+    ];
+
+    $credit_card = [
+        'customer' => $costumer,
+        'installments' => (int) $pagamento['parcelas'],
+        'billing_address' => $billingAddress,
+        'payment_token' => $paymentToken,
+        'message' => $carrinho->titulo . $contaCarrinho > 1 ? ' +' . $contaCarrinho : null,
+    ];
+
+    $payment = [
+        'credit_card' => $credit_card
+    ];
+
+    $body = [
+        'items' => $items,
+        'metadata' => $metadata,
+        'payment' => $payment
+    ];
+
+    try {
+        $api = new Gerencianet($options);
+        $response = $api->createOneStepCharge($params = [], $body);
+
+        $dadosFatura = [
+            'cliente'  => $pagamento['id'],
+            'cliente_nome' => $pagamento['nome'] . ' ' . $pagamento['sobrenome'],
+            'cliente_email' => $pagamento['email'],
+            'cliente_cpf' => $pagamento['cpf'],
+            'transacao' => $response['data']['charge_id'],
+            'valor_total' => $_SESSION['total_valor'],
+            'idSessao' => $pagamento['id_sessao'],
+            'status' => 'waiting',
+            'data' => date('Y-m-d H:i:s'),
+            'dia' => date('d'),
+            'mes' => date('m'),
+            'ano' => date('Y'),
+        ];
+
+
+        //cria fatura de compra
+        $cadastrarFatura->Criacao('faturas', $dadosFatura);
+
+        //Leitura carrinho para minhas compras
+        $sheep->Leitura('carrinho', "WHERE id_sessao = :idSes AND dia = :dia AND mes = :mes AND ano = :ano", "idSes={$pagamento['id_sessao']}&dia={$dataDia}&mes={$dataMes}&ano={$dataAno}");
+        $carrinhoDoClienteCompras = Formata::Resultado($sheep);
+        if ($carrinhoDoClienteCompras) {
+            foreach ($sheep->getResultado() as $carrinhoCompras) {
+                $carrinhoCompras = (object) $carrinhoCompras;
+
+                $dadosMinhasCompras = [
+                    'id_cliente' => $pagamento['id'],
+                    'id_produto' => $carrinhoCompras->id_produto,
+                    'produto' => $carrinhoCompras->titulo,
+                    'capa' => $carrinhoCompras->capa,
+                    'valor_produto' => $carrinhoCompras->valor_total, //valor_total no carrinho é: valor do produto + personalização se houver
+                    'quantidade' => $carrinhoCompras->qtde,
+                    'tamanho' => $carrinhoCompras->tamanho,
+                    'personaliza_foto' => $carrinhoCompras->personaliza_foto,
+                    'nome_camisa' => $carrinhoCompras->nome_camisa,
+                    'numero_camisa' => $carrinhoCompras->numero_camisa,
+                    'valor_total' => $_SESSION['total_valor'],/*total_valor é o valor_final que no carrinho virou total_valor e foi colocado
+                     na $_SESSION por isso se recupera ele em   $_SESSION['total_valor']*/
+                    'nome_cliente' => $pagamento['nome'] . ' ' . $pagamento['sobrenome'],
+                    'whatsapp' =>  $pagamento['whatsapp'],
+                    'email' => $pagamento['email'],
+                    'cpf' => $pagamento['cpf'],
+                    'endereco' => $pagamento['endereco'],
+                    'numero' => $pagamento['numero'] ? $pagamento['numero'] : 0,
+                    'cep' => $pagamento['cep'],
+                    'bairro' => $pagamento['bairro'],
+                    'estado' => $estado->estado_nome,
+                    'uf' => $estado->estado_uf,
+                    'cidade' => $cidade->cidade_nome,
+                    'status' => 'waiting',
+                    'transacao' => $response['data']['charge_id'],
+                    'id_sessao' => $carrinhoCompras->id_sessao,
+                    'data' => date('Y-m-d H:i:s'),
+                    'dia' => date('d'),
+                    'mes' => date('m'),
+                    'ano' => date('Y'),
+                ];
+
+                //cria minhas compras
+                $cadastrarMinhasCompras->Criacao('minhas_compras', $dadosMinhasCompras);
+                if ($cadastrarMinhasCompras->getResultado()) {
+
+                    //remove do carrinho após a conclusão da compra
+                    $removerDoCarrinho = new Excluir();
+                    $removerDoCarrinho->Remover('carrinho', "WHERE id_sessao = :idSes AND dia = :dia AND mes = :mes AND ano = :ano", "idSes={$pagamento['id_sessao']}&dia={$dataDia}&mes={$dataMes}&ano={$dataAno}");
+                }
+            }
+        }
+
+
+        //e-mail de alerta de pagamento 
+        $horaAtual = date('H:i');
+        $assunto = "INTENÇÃO DE PAGAMENTO CARTÃO DE CRÉDITO " . $pagamento['nome'] . " CPF:" . $pagamento['cpf'];
+        $empresaNome = SITENAME;
+        $emailEmpresa = EMAIL;
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-Type: text/html; charset=UTF8' . "\r\n";
+        $produtoEmail = $carrinho->titulo . $contaCarrinho > 1 ? ' +' . $contaCarrinho : null;
+        $valorEmail = Formata::vr($pagamento['valor_total']);
+        $dataEmail = date('d/m/Y');
+        $mensagem = "
+        <p>INTENÇÃO DE PAGAMENTO CARTÃO DE CRÉDITO - AGUARDANDO</p>
+        <p>Nome: {$pagamento['nome']} {$pagamento['sobrenome']}</p>
+        <p>E-mail: {$pagamento['email']}</p>
+        <p>CPF: {$pagamento['cpf']}</p>
+        <p>Fone: {$pagamento['whatsapp']}</p>
+        <p>Produto: {$carrinho->titulo}</p>
+        <p>Valor: R$ {$valorEmail}</p>
+        <p>Transação: {$response['data']['charge_id']}</p>
+        <p>Data: {$dataEmail} Empresa {$empresaNome} - E-mail da Empresa: {$emailEmpresa}</p>
+        ";
+        mail($emailEmpresa, $assunto, $mensagem, $headers);
+
+
+        //Entrar logado no painel de controle
+        header("Location: " . HOME . '/cliente/' . "sheep.php");
+    } catch (GerencianetException $e) {
+        print_r($e->code);
+        print_r($e->error);
+        print_r($e->errorDescription);
+    } catch (Exception $e) {
+        print_r($e->getMessage());
+    }
+} else {
+    header("Location: " . HOME);
+    exit();
+}
