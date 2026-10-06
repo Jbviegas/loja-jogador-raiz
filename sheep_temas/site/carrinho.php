@@ -16,6 +16,12 @@
 
         <span>
             <?php
+            if (empty($idSessao)) {
+                $idSessao = $_SESSION['id_sessao'] ?? session_id();
+            }
+            if (empty($_SESSION['id_sessao']) && !empty($idSessao)) {
+                $_SESSION['id_sessao'] = $idSessao;
+            }
             $carrinhoCompras = new Ler();
             $carrinhoCompras->Leitura('carrinho', "WHERE id_sessao = :id", "id={$idSessao}");
             if (!empty($carrinhoCompras->getResultado())) {

@@ -1,4 +1,7 @@
 <?php
+if (!$sheep instanceof Ler) {
+  $sheep = new Ler();
+}
 $editar = filter_input(INPUT_GET, 'editar', FILTER_VALIDATE_INT);
 $sheep->Leitura('produto', "WHERE id = :id", "id={$editar}");
 $atualizaProdutos = Formata::Resultado($sheep);
@@ -227,8 +230,8 @@ $titulo = trim($_POST['titulo']);
                   </div>
 
                 </div>
-                
-                 <div class="form-group row mb-7">
+
+                <div class="form-group row mb-7">
                   <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Lançamento</label>
                   <div class="col-md-7">
                     <div style="border: 2px  solid black;">
@@ -236,7 +239,7 @@ $titulo = trim($_POST['titulo']);
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- FIM TAMANHO MAYKONSILVEIRA.COM.BR -->
 
 

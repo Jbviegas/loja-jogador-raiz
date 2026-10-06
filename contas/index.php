@@ -122,6 +122,7 @@ endif;
                      * fORMULARIO USUARIO LOGADO
                      * 
                      */
+                    $cliente = (object) [];
                     if (isset($_SESSION['sheep_user'])):
                         $ler = new Ler();
                         $ler->Leitura('usuarios', "WHERE id = :id", "id={$_SESSION['sheep_user']['id']}");

@@ -46,6 +46,9 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
 
                                         $sheep->Leitura('faturas', "WHERE status = 'paid' AND finalizado = 'C' AND mes = :mes AND ano = :ano ORDER BY data DESC", "mes={$mes}&ano={$ano}");
                                         $minhasCompras = Formata::Resultado($sheep);

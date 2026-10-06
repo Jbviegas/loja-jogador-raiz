@@ -13,8 +13,8 @@ que gerencia a conexão com o banco.*/
 
     //Essa função monta automaticamente a query SQL no formato: SELECT * FROM {tabela} {condição}
     public function Leitura($BD, $SQL = null, $Adicionais = null)
-    {    
-        if (!empty($Adicionais)):// Se Adicionais não estiver vazio 
+    {
+        if (!empty($Adicionais)): // Se Adicionais não estiver vazio 
             if (is_array($Adicionais)) { // Verifica se Adicionais é um array
                 $this->Locais = $Adicionais; // Se for um array, atribui diretamente a Locais
             } else {
@@ -72,7 +72,7 @@ que gerencia a conexão com o banco.*/
         //Exemplo:
         //LeituraCompleta("SELECT u.nome, p.produto FROM usuarios u JOIN pedidos p ON u.id=p.usuario_id WHERE u.id=:id", "id=15")
         //Isso busca o pedido do usuário com id igual a 15
-        
+
         //Nem todas as buscas são tão complexas, você pode fazer buscas mais simples, como:
         //LeituraCompleta("SELECT * FROM produtos WHERE categoria_id=:categoria_id", "categoria_id=2")
     }
@@ -103,7 +103,7 @@ que gerencia a conexão com o banco.*/
 
 
 
-    private function Conectar() // Função que estabelece a conexão com o banco de dados
+    private function Preparar() // Função que estabelece a conexão com o banco de dados
     {
 
         $this->Conectar = parent::getConectar(); // Obtém a conexão PDO
@@ -114,18 +114,18 @@ que gerencia a conexão com o banco.*/
 
     private function getSheep()
     {
-        
+
         if ($this->Locais):
-            foreach ($this->Locais as $sheep => $ms):// $sheep → é a chave (o nome do parâmetro, tipo "id", "email", "limit")
-                if ($sheep == 'limit' || $sheep == 'offset')://$ms → é o valor do parâmetro (tipo 15, "teste@teste.com", 10)
-                    $ms = (int) $ms;// Garante que limit e offset sejam valores inteiros
+            foreach ($this->Locais as $sheep => $ms): // $sheep → é a chave (o nome do parâmetro, tipo "id", "email", "limit")
+                if ($sheep == 'limit' || $sheep == 'offset'): //$ms → é o valor do parâmetro (tipo 15, "teste@teste.com", 10)
+                    $ms = (int) $ms; // Garante que limit e offset sejam valores inteiros
                 endif;      //bindValue: Substitui o :param da query pelo valor certo.
                 $this->Ler->bindValue(":{$sheep}", $ms, (is_int($ms) ? PDO::PARAM_INT : PDO::PARAM_STR));
             endforeach;/*Se for número (int), usa PDO::PARAM_INT, se for string, usa PDO::PARAM_STR. */
-        endif;//"id" => 15   → bindValue(":id", 15, PDO::PARAM_INT) "nome" => "Messi" → bindValue(":nome", "Messi", PDO::PARAM_STR)
+        endif; //"id" => 15   → bindValue(":id", 15, PDO::PARAM_INT) "nome" => "Messi" → bindValue(":nome", "Messi", PDO::PARAM_STR)
 
 
-/*       O que é $this->Locais? 
+        /*       O que é $this->Locais? 
 $this->Locais é o array de parâmetros que você passa na hora de chamar Leitura ou LeituraCompleta.
 Pode vir de:
 um array direto: ["id" => 15, "ativo" => 1] ou de uma string do tipo query: "id=15&ativo=1" (isso é convertido em array pelo parse_str).
@@ -159,22 +159,22 @@ Isso evita problemas de SQL Injection e também garante que o PDO entenda corret
 
     private function Execute()
     {
-        $this->Conectar();
+        $this->Preparar();
 
         try {
-            $this->getSheep();// Faz o bindValue de cada parâmetro da consulta
-            $this->Ler->execute();// Executa a consulta
-            $this->Resultado = $this->Ler->fetchAll();// Retorna todos os resultados da consulta
-        } catch (Exception $ms) {// Captura exceções
-            $this->Resultado = null;// Se der erro, atribui null a Resultado
-            print "<b>Erro ao ler: {$ms->getMessage()}</b> ";// Imprime a mensagem de erro
+            $this->getSheep(); // Faz o bindValue de cada parâmetro da consulta
+            $this->Ler->execute(); // Executa a consulta
+            $this->Resultado = $this->Ler->fetchAll(); // Retorna todos os resultados
+        } catch (Exception $ms) { // Captura exceções
+            $this->Resultado = null; // Se der erro, atribui null a Resultado
+            print "<b>Erro ao ler: {$ms->getMessage()}</b> "; // Imprime a mensagem de erro
         }
     }
 
     /*
     Execute()
 
-        Chama Conectar().
+        Chama Preparar().
 
         Faz os binds (getSheep()).
 

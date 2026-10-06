@@ -41,11 +41,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
+                                        <?php
                                         // Primeiro, pega o mês atual
                                         $mes = date('m');
 
                                         // Agora faz a leitura filtrando corretamente
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
                                         $sheep->Leitura('faturas', "WHERE (finalizado = 'C' OR status IN ('canceled', 'refunded', 'unpaid', 'expired')) AND mes = :mes ORDER BY data DESC", "mes={$mes}");
 
                                         $minhasCompras = Formata::Resultado($sheep);
@@ -66,9 +69,9 @@
                                                     <td>
                                                         <?php if ($compras->status == 'paid' || $compras->status == 'approved') { ?>
                                                             <a href="#" class="btn btn-success">Aprovado</a>
-                                                        <?php } elseif ($compras->status == 'refunded' || $compras->status == 'canceled' ||$compras->status == 'unpaid' || $compras->status == 'expired' || $compras->finalizado == 'C') { ?>
+                                                        <?php } elseif ($compras->status == 'refunded' || $compras->status == 'canceled' || $compras->status == 'unpaid' || $compras->status == 'expired' || $compras->finalizado == 'C') { ?>
                                                             <a href="#" class="btn btn-danger">Cancelada</a>
-                                                        <?php }else { ?>
+                                                        <?php } else { ?>
                                                             <a href="#" class="btn btn-warning">Pendente</a>
                                                         <?php } ?>
                                                     </td>

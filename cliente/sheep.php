@@ -1,22 +1,6 @@
-          <?php
+<?php
 
-            /**********************************************************************
-             * ********************************************************************
-             * POR MAYKON SILVEIRA 
-             * MSFLIX.COM.BR E MAYKONSILVEIRA.COM.BR
-             * 
-             * ********************************************************************
-             * ********************************************************************
-             * Que você seja abençoado em tudo que fizer com este sistema, 
-             * contanto que seja justo em todas as suas ações.
-             * Tudo correrá bem para você, se colocar o Criador dos céus e da terra, 
-             * e nosso Senhor Jesus, em primeiro lugar em sua vida.
-             * Muitas são as aflições dos justos, mas o Altíssimo os livra de todas.
-             * Att, Maykon Silveira
-             * ********************************************************************
-             */
-            // topo Maykon Silveira
-            require_once('sheep_topo.php');//Inclui o topo do painel
+            require_once('sheep_topo.php'); //Inclui o topo do painel
 
             $sheep_caminho_painel = '';
             //Esse $ms vem do sheep_checa.php
@@ -31,21 +15,21 @@
             if (file_exists($sheep_caminho_painel)):
                 //Se o arquivo existe 
                 include_once($sheep_caminho_painel);
-                //ele é incluído e mostrado na tela
+            //ele é incluído e mostrado na tela
             else:
                 //Se o arquivo não existe
-                echo "Erro ao acessar a página /{$ms}.php!";//Mostra mensagem de erro
-                unset($_SESSION['sheep_user']);//Derruba a sessão do usuário
-                header('Location: ' . HOME);//Redireciona para a página inicial do site
+                echo "Erro ao acessar a página /" . (isset($ms) ? $ms : '') . ".php!"; //Mostra mensagem de erro
+                unset($_SESSION['sheep_user']); //Derruba a sessão do usuário
+                header('Location: ' . HOME); //Redireciona para a página inicial do site
 
             endif;
 
             // rodape Maykon Silveira
-            require_once('sheep_rodape.php');//Inclui o rodapé do painel
+            require_once('sheep_rodape.php'); //Inclui o rodapé do painel
             ?>
 
           <script>
-              window.addEventListener("pageshow", function(event) {//Atualiza a pagina quando o usuário volta
+              window.addEventListener("pageshow", function(event) { //Atualiza a pagina quando o usuário volta
                   if (event.persisted) {
                       location.reload();
                   }

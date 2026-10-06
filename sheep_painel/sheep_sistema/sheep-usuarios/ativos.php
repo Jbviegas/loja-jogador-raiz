@@ -48,7 +48,11 @@
                                     </thead>
                                     <tbody>
 
+                                        
                                         <?php
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
 
                                         $sheep->Leitura('usuarios', " WHERE status = 's' ORDER BY nome ASC");
                                         if ($sheep->getResultado()) {

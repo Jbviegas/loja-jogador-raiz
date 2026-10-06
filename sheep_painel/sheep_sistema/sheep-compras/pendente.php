@@ -50,6 +50,9 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
 
                                         $sheep->Leitura('minhas_compras',  "WHERE status = 'waiting' AND ano = :ano ORDER BY data DESC", "ano={$ano}");
                                         $minhasCompras = Formata::Resultado($sheep);
@@ -199,6 +202,7 @@
     <!-- INICIO MODAL ENVIO DE RASTREIO MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
 
     <!-- basic modal -->
+     <?php if (isset($compras) && isset($compras->transacao)) { ?>
     <div class="modal fade" id="rastreio<?= $compras->transacao ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -229,6 +233,6 @@
     <?php
     $sheep = null;
     $ler = null;
-    ?>
+    }?>
 
 </div>

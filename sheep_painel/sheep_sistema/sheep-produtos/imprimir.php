@@ -45,6 +45,9 @@
                   </thead>
                   <tbody>
                     <?php
+                    if (!$sheep instanceof Ler) {
+                      $sheep = new Ler();
+                    }
                     $sheep->Leitura('produto', "WHERE tipo = 'produto' ORDER BY data DESC");
                     $produtoSite = Formata::Resultado($sheep);
                     if ($produtoSite) {

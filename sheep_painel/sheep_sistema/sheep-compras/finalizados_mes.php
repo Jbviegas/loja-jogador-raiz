@@ -53,6 +53,10 @@
                                     <tbody>
                                         <?php
 
+                                         if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
+                                        
                                         $sheep->Leitura('minhas_compras',  "WHERE finalizado = 'S' AND status != 'canceled' AND mes = :mes ORDER BY data DESC", "mes={$mes}");
                                         $minhasCompras = Formata::Resultado($sheep);
                                         if ($minhasCompras) {

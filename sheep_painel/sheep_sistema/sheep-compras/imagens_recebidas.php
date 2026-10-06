@@ -3,6 +3,9 @@
     <div class="container" style="margin-top: 100px;">
         <?php
         // Leitura da tabela, ordenando pela data mais recente primeiro
+        if (!$sheep instanceof Ler) {
+            $sheep = new Ler();
+        }
         $sheep->Leitura(
             'produto_cliente',
             " ORDER BY data DESC",

@@ -99,15 +99,15 @@
 
                 $idSessaoAtual = session_id(); // Obtém o ID da sessão atual
 
-               
+
                 $query = "WHERE id_sessao = '{$idSessaoAtual}'"; // Passando diretamente como string('' tranforma o id da sessão em string)
-                $sheep->Leitura('carrinho', $query);//Lê no banco a tabela carrinho e verifica se contém a condição id_sesao = $idSessaoAtual 
-                 //A classe Leitura  Monta a consulta SQL no formato: SELECT * FROM {tabela} {condição} e insere em sheep
+                $sheep->Leitura('carrinho', $query); //Lê no banco a tabela carrinho e verifica se contém a condição id_sesao = $idSessaoAtual 
+                //A classe Leitura  Monta a consulta SQL no formato: SELECT * FROM {tabela} {condição} e insere em sheep
                 $contaCarrinho = $sheep->getContaLinhas() ?: 0;
                 //Se houver na tabela carrinho(sheep) um ou mais produtos e o id da sessão atual(id_sessao) chama a função getContaLinhas()
                 //que por sua vez chama a função privada LER(Ler->rowCount()) contida em si que conta a quantidade de linhas na tabela 
                 //carrinho que contenham o id da sessão atual e adiciona esse valor a variavel $contaCarrinho que exibe esse valor no carrinho.
-                
+
                 ?>
 
                 <a href="<?= HOME ?>/carrinho" title="" class="cart">
@@ -135,7 +135,7 @@
 
 <div class="menuPesquisa">
     <!--Inclui o arquivo pesquisar.php que contém a lógica para exibir os produtos pesquisados e os cards de produtos em destaque na div de pesquisa-->
-    <?php require_once("Pesquisar.php") ?>
+    <? require_once(__DIR__ . '/pesquisar.php'); ?>
     <!--Aqui é onde os produtos pesquisados vão aparecer, a função search_produtos() do index.php mostra essa div quando o usuário
      clica na barra de pesquisa e esconde quando o usuário clica em qualquer parte fora da barra de pesquisa, ou seja, a div de pesquisa
       aparece e desaparece da direita para a esquerda, e os produtos pesquisados aparecem dentro dessa div, os produtos são exibidos

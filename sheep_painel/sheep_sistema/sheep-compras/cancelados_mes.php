@@ -52,6 +52,9 @@
                                         $mes = date('m');
 
                                         // Agora faz a leitura filtrando corretamente
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
                                         $sheep->Leitura('minhas_compras', "WHERE (finalizado = 'C' OR status IN ('canceled', 'refunded', 'unpaid')) AND mes = :mes ORDER BY data DESC", "mes={$mes}");
 
                                         $minhasCompras = Formata::Resultado($sheep);

@@ -16,7 +16,7 @@
                 $bannerGoogleApp = Formata::Resultado($sheep);
                 if ($bannerGoogleApp):
                 ?>
-                    <img src="<?= HOME ?>/img-banners/<?= $sheep->getResultado()[0]['capa'] ?>" alt="Logo Preta transparente" width="300px">
+                    <img src="<?= HOME ?>/uploads/img-banners/<?= $sheep->getResultado()[0]['capa'] ?>" alt="Logo Preta transparente" width="300px">
                 <?php endif; ?>
                 <p>Nossa missão é proporcinar a vocês nossos clientes
                     a melhor experiência de compra e o melhor atendimento.</p>

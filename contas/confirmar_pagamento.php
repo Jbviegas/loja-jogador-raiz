@@ -7,7 +7,7 @@ require_once('../sheep_core/config.php');
 require_once('./vendor/autoload.php');
 
 use Gerencianet\Exception\GerencianetException;
-use Gerencianet\Gerencianet;
+
 
 $sheep = new Ler();
 
@@ -15,6 +15,7 @@ $pagamento = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
 
 //para cadastrar cliente na loja 
 $cadastrarUsuario = new Criar();
+//$cadastrarConsentimentos = new Criar();
 
 
 //data atual
@@ -100,52 +101,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         foreach ($sheep->getResultado() as $carrinho) {
             $carrinho = (object) $carrinho;
-
-            
         }
     }
 
-    
-    //url de notificação
-    $metadata = ["notification_url" => $urlRetorno];
-
-    $costumer = [
-        'name' => $pagamento['nome'] . ' ' . $pagamento['sobrenome'],
-        'cpf' => $cpf,
-        'phone_number' => $fone,
-        'email' => $pagamento['email'],
-        'birth' => date('Y-m-d', strtotime($pagamento['nascimento']))
-    ];
-
-    $billingAddress = [
-        'street' => $pagamento['endereco'],
-        'number' => $pagamento['numero'] ? $pagamento['numero'] : 0,
-        'neighborhood' => $pagamento['bairro'],
-        'zipcode' => $cep,
-        'city' => $cidade->cidade_nome,
-        'state' => $estado->estado_uf
-    ];
-
-    $credit_card = [
-        'customer' => $costumer,
-        'installments' => (int) $pagamento['parcelas'],
-        'billing_address' => $billingAddress,
-        'payment_token' => $paymentToken,
-        'message' => $carrinho->titulo . $contaCarrinho > 1 ? ' +' . $contaCarrinho : null,
-    ];
-
-    $payment = [
-        'credit_card' => $credit_card
-    ];
-
-    $body = [
-        'items' => $items,
-        'metadata' => $metadata,
-        'payment' => $payment
-    ];
 
     try {
-      
+
 
         $dadosUsuario = [
             'nome' => $pagamento['nome'],
@@ -174,6 +135,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //para cadastrar cliente na loja 
         $cadastrarUsuario->Criacao('usuarios', $dadosUsuario);
+
+        /*
+        $dadosConsentimento = [
+            'nome' => $pagamento['nome'],
+            'sobrenome' => $pagamento['sobrenome'],
+            'cpf' => $pagamento['cpf'],
+            'nascimento' => $pagamento['nascimento'],
+            'email' => $pagamento['email'],
+            'senha' => password_hash($pagamento['senha'], PASSWORD_DEFAULT, ['const' => 10]),
+            'whatsapp' => $pagamento['whatsapp'],
+            'endereco' => $pagamento['endereco'],
+            'numero' => $pagamento['numero'],
+            'cep' => $pagamento['cep'],
+            'status' => 'S',
+            'estado' => $pagamento['estado'],
+            'cidade' => $pagamento['cidade'],
+            'bairro' => $pagamento['bairro'],
+            'nivel' => 'C',
+            'tipo' => 'usuario',
+            'tipo_cadastro' => 'criar',
+            'data' => date('Y-m-d H:i:s'),
+            'dia' => date('d'),
+            'mes' => date('m'),
+            'ano' => date('Y'),
+        ];
+
+        $cadastrarConsentimentos->Criacao('consentimento', $dadosConsentimento);
+
+        */
 
         //ler para logar
         $ler = new Ler();

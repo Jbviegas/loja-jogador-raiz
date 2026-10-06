@@ -1,22 +1,11 @@
 <?php
 
-/**********************************************************************
- * ********************************************************************
- * GERENTE DE ATUALIZAÇÃO GERAL MAYKONSILVEIRA.COM.BR E MAYKON SILVEIRA
- * 
- * ********************************************************************
- * MAYKONSILVEIRA.COM.BR DEREICIONANDO VOCÊ PARA O CAMINHO DO SUCESSO #*
- * *************MAYKON***SILVEIRA**************************************
- * *************sheep**PHP***********************************
- * ********************************************************************
- * TUDO AQUI FOI CRIADO NO DIA 01-10-2021 POR MAYKON SILVEIRA
- * TODOS OS DIREITOS RESERVADOS E CÓDIGO FONTE RASTREADO COM ARQUIVOS 
- * CRIADO POR MAYKONSILVEIRA.COM.BR DESDE 2007 *********
- * TODA SABEDORIA PARA CRIAR ESTES SISTEMAS VEM DO SANTO E ETERNOR PAI
- * O SANTO SENHOR DEUS DE ABRAÃO, ISSAC E JACÓ E DO MEU ÚNICO SENHOR 
- * O MESSIAS NOSSO SALVADOR, POIS A GLROIA É DO PAI E DO FILHO PARA SEMPRE
- * ********************************************************************
- */
+/***********************************************************************************************************************
+ * *********************************************************************************************************************
+ * GERENTE DE ATUALIZAÇÃO GERAL
+ *
+ * *********************************************************************************************************************
+ ***********************************************************************************************************************/
 class Atualizar extends Conexao
 {
 
@@ -38,7 +27,7 @@ class Atualizar extends Conexao
     {
         $this->Tabela = (string) $Banco;
         // $Banco é o nome da tabela no banco de dados
-        $this->Dados  = $Dados;
+        $this->Dados = $Dados;
         /* $Dados
         São os valores do SET (ex: ["nome" => "Maria"]). */
         $this->Termos = (string) $SQL;
@@ -59,7 +48,7 @@ class Atualizar extends Conexao
         /*
         $dados = ["nome" => "Maria"];
         $termos = "WHERE id = :id LIMIT :limit"; // TEXTO da query
-        $adicionais = "id=5&limit=1";            // VALORES para o bind
+        $adicionais = "id=5&limit=1";             // VALORES para o bind
 
         Query gerada:
         UPDATE clientes SET nome = :set_nome WHERE id = :id LIMIT :limit
@@ -96,9 +85,9 @@ class Atualizar extends Conexao
         $this->getSyntax();
         $this->Execute();
 
-         /*
+        /*
         Serve para definir novos parâmetros e reexecutar a query já preparada.
-         */
+        */
     }
 
 
@@ -108,7 +97,7 @@ class Atualizar extends Conexao
         $Campos = []; // array para armazenar os pares campo = :campo
 
         foreach ($this->Dados as $key => $value):
-            /* Prefixo set_ evita conflito de placeholders(Ex: variaveis com mesma chave idade= 40 - idade= 18)com p prefixo set_ não 
+            /* Prefixo set_ evita conflito de placeholders(Ex: variaveis com mesma chave idade= 40 - idade= 18)com p prefixo set_
             corre risco de setar o errado */
             $Campos[] = $key . ' = :set_' . $key;
         endforeach;
@@ -128,7 +117,7 @@ class Atualizar extends Conexao
     /**
      * Faz a conexão com o banco
      */
-    private function Canectar()
+    private function Preparar()
     {
         $this->Conexao = parent::getConectar(); //É a função que pega a função(Conectar()) com o método de conexão PDO com o banco de dados
         $this->Atualizar = $this->Conexao->prepare($this->Atualizar); //Atualizar é a instrução SQL preparada que será executada
@@ -141,7 +130,7 @@ class Atualizar extends Conexao
      */
     private function Execute()
     {
-        $this->Canectar(); //Função de conexão
+        $this->Preparar(); //Função de conexão
 
         try {
             // Prepara binds do SET
@@ -157,12 +146,12 @@ class Atualizar extends Conexao
 
             $parametros = array_merge($bindSet, $this->Locais); //array_merge une os arrays[($Dados) + ($Adicionais)]-($bindSet, $this->Locais)
 
-            $this->Atualizar->execute($parametros); /*Executa a query("UPDATE {$this->Tabela} SET {$Campos} {$this->Termos}";) com os 
+            $this->Atualizar->execute($parametros); /*Executa a query("UPDATE {$this->Tabela} SET {$Campos} {$this->Termos}";) com os
             parâmetros que foram unidos integrados nela*/
             $this->Resultado = true;    // Se tudo der certo, retorna true
         } catch (Exception $wt) {   // Captura exceções
             $this->Resultado = null;  // Se der erro, retorna null
-            echo "<b>Erro ao Atualizar: {$wt->getMessage()}</b> - Código: {$wt->getCode()}";// Exibe mensagem de erro
+            echo "<b>Erro ao Atualizar: {$wt->getMessage()}</b> - Código: {$wt->getCode()}"; // Exibe mensagem de erro
         }
     }
 }

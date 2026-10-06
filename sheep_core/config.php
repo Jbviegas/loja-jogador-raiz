@@ -13,7 +13,7 @@ $dotenv->load();
 // =====================
 // CONFIGURAÇÕES DO SITE
 // =====================
-define('SHEEP_URL', 'localhost/loja-jogador-raiz');
+define('SHEEP_URL', 'jogadorraiz.com.br');
 
 // =====================
 // CONFIGURAÇÕES DO BANCO

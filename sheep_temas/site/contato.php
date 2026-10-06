@@ -69,7 +69,7 @@
                         <input type="text" name="nome" placeholder="Nome Completo">
                         <input type="text" name="id" placeholder="Número do Pedido">
                         <input type="text" name="gmail" placeholder="Seu e-mail">
-                        <input type="hidden" name="email" value="<?=EMAIL?>">
+                        <input type="hidden" name="email" value="<?= EMAIL ?>">
                         <input type="hidden" name="firewall" value="<?= $_SESSION['_firewall'] ?>">
                         <textarea name="mensagem" cols="30" rows="9">Deixe sua mensagem</textarea>
                         <button type="submit" name="sendContato" class="btn-3">Enviar</button>
@@ -80,7 +80,7 @@
                 <br>
                 <br>
                 <br>
-                <a href="https://api.whatsapp.com/send?phone=5521975309475">
+                <a href="https://api.whatsapp.com/send?phone=5511943046009">
                     <h4 class="logo-zap">Whatsapp:<i class="fa fa-whatsapp" aria-hidden="true"></i></h4>
                 </a>
             </div>

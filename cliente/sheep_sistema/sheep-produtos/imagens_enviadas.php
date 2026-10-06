@@ -5,7 +5,10 @@
         <span>
             <?php
             $carrinhoCompras = new Ler();
-            $carrinhoCompras->Leitura('produto_cliente', "WHERE tipo = 'produto' AND usuario = :id", "id={$_SESSION['sheep_user']['id']}"
+            $carrinhoCompras->Leitura(
+                'produto_cliente',
+                "WHERE tipo = 'produto' AND usuario = :id",
+                "id={$_SESSION['sheep_user']['id']}"
             );
             if (!empty($carrinhoCompras->getResultado())) {
                 echo '<h4>Suas imagens enviadas</h4>';
@@ -18,6 +21,9 @@
 
         <?php
         // Leitura da tabela, ordenando pela data mais recente primeiro
+        if (!$sheep instanceof Ler) {
+            $sheep = new Ler();
+        }
         $sheep->Leitura(
             'produto_cliente',
             "WHERE tipo = 'produto' AND usuario = :id ORDER BY data DESC",

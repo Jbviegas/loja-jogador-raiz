@@ -5,7 +5,7 @@ class ProdutosClientes
 
     private array $data;
     private int $id;
-    private $resultado;
+    private mixed $resultado = null;
     private const BD = 'produto_cliente';
 
     // Função que cria um novo produto
@@ -50,7 +50,6 @@ class ProdutosClientes
 
         if (!$this->data) {
             return $this->resultado = false;
-            exit();
         }
 
         $this->filtroBanco();
@@ -63,23 +62,22 @@ class ProdutosClientes
         $this->id = $id;
         if (!$this->id) {
             return $this->resultado = false;
-            exit();
         }
 
         $this->removeCapa();
         return $this->removeBancoDeDados();
     }
 
-    public function getResultado()
+    public function getResultado(): mixed
     {
         return $this->resultado;
     }
 
 
-    private function verificaCampos(array $data)
-    {
-        return in_array('', $data);
-    }
+   private function verificaCampos(array $data): bool
+{
+    return in_array('', $data);
+}
 
 
     /*Boa prática de design
@@ -100,8 +98,8 @@ Não faz sentido retornar nada → void é perfeito. */
         if (isset($this->data['capa'])) { //Verifica se existe uma imagem (capa):
 
             $enviaCapa = new Uploads(SHEEP_IMG_PRODUTOS); //Instancia a classe Uploads que é responsável por enviar arquivos para o servidor
-        // Uploads:
-/*Valida extensão (só JPG, PNG, GIF) - Verifica MIME type(JPG, PNG, GIF) - Bloqueia extensões perigosas (.php, .js, etc.) - Redimensiona a imagem (máx. 2000px)
+            // Uploads:
+            /*Valida extensão (só JPG, PNG, GIF) - Verifica MIME type(JPG, PNG, GIF) - Bloqueia extensões perigosas (.php, .js, etc.) - Redimensiona a imagem (máx. 2000px)
 Gera nome limpo com Formata::Name - Salva em /images/ano/mes/ -Se tudo ok → retorna o caminho seguro:images/2025/08/camisa-barcelona-jogador-raiz-1692345678.png
 Se der erro → capa é removida (unset).*/
 
@@ -183,7 +181,7 @@ Se der erro → capa é removida (unset).*/
         $this->data = array_map('htmlspecialchars', $this->data);
 
         // Remove caracteres não alfanuméricos (mantendo @)
-         preg_replace('/[^[:alnum:]@]/', '', $this->data);
+        preg_replace('/[^[:alnum:]@]/', '', $this->data);
 
         // Gera URL única
         /// Através da função Formata::Name modifica o título retirando caracteres especiais, espaços, deixando minusculo e etc..
@@ -191,7 +189,7 @@ Se der erro → capa é removida (unset).*/
             . '-jogador-raiz-' . time() . '-' . rand();
         // Cria uma URL única para o produto, usando o título, timestamp e um número aleatório para que a url seja única.
         //Exemplo: camisa-do-barcelona-jogador-raiz-1692345678-12345
-        
+
         // Força tipos de dados para que só envie dados do tipo certo do dado recebido(string,int,float,booleano)
         $this->data['transacao']     = (string) $this->data['transacao'];
         $this->data['titulo']        = (string) $this->data['titulo'];
@@ -202,7 +200,7 @@ Se der erro → capa é removida (unset).*/
         $this->data['usuario']       = (int) $this->data['usuario'];
 
         // Se for cadastro novo, adiciona data completa e fragmentada
-        if ($this->data['tipo_cadastro'] === 'criar') {//Novo cadastro do tipo criar com a data da criação
+        if ($this->data['tipo_cadastro'] === 'criar') { //Novo cadastro do tipo criar com a data da criação
             $this->data['data'] = date('Y-m-d H:i:s');
             $this->data['dia']  = date('d');
             $this->data['mes']  = date('m');
@@ -213,16 +211,16 @@ Se der erro → capa é removida (unset).*/
     // Faz a inserção dos dados no banco de dados 
     private function salvarNoBanco(): bool
     {
-        $salvar = new Criar();//Instancia a classe Criar
-        $salvar->Criacao(self::BD, $this->data);// BD é a tabela 'produtos_clientes' e $this->data são os dados filtrados do formulário
+        $salvar = new Criar(); //Instancia a classe Criar
+        $salvar->Criacao(self::BD, $this->data); // BD é a tabela 'produtos_clientes' e $this->data são os dados filtrados do formulário
         //Criação() É a função da classe Criar com o método responsável por criar um registro no banco de dados
 
-        if ($salvar->getResultado()) {//Caso a criação do registro seja bem-sucedida
-            $this->resultado = $salvar->getResultado();//Armazena o ID do último registro inserido em $this->resultado
-            return true;//Retorna verdadeiro indicando que a inserção foi bem-sucedida
+        if ($salvar->getResultado()) { //Caso a criação do registro seja bem-sucedida
+            $this->resultado = $salvar->getResultado(); //Armazena o ID do último registro inserido em $this->resultado
+            return true; //Retorna verdadeiro indicando que a inserção foi bem-sucedida
         }
 
-        return false;//Caso a inserção falhe, retorna falso indicando que a inserção falhou
+        return false; //Caso a inserção falhe, retorna falso indicando que a inserção falhou
     }
 
 

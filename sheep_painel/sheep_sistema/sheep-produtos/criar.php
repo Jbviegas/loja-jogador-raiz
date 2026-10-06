@@ -78,6 +78,9 @@
                   <div class="col-md-7">
                     <select name="id_categoria" class="form-control select2 load_categoria">
                       <?php
+                      if (!$sheep instanceof Ler) {
+                        $sheep = new Ler();
+                      }
                       $sheep->Leitura('categorias', "WHERE tipo = 'categoria' ORDER BY nome ASC");
                       $categoriasLoja = Formata::Resultado($sheep);
                       if ($categoriasLoja) {

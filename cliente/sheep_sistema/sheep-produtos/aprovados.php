@@ -1,6 +1,6 @@
 <div class="main-content">
 
-    <!-- INICIO NAVEGAÇÃO MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+    <!-- INICIO NAVEGAÇÃO --->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= URL_CAMINHO_PAINEL_CLIENTE ?>sheep.php">Inicio</a></li>
@@ -8,12 +8,12 @@
             <li class="breadcrumb-item active" aria-current="page">Compras Aprovadas</li>
         </ol>
     </nav>
-    <!-- FIM NAVEGAÇÃO MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+    <!-- FIM NAVEGAÇÃO --->
 
     <section class="section">
         <div class="section-body">
 
-            <!-- INICIO TABELA  MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA -->
+            <!-- INICIO TABELA   -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -26,9 +26,18 @@
 
                                     <tbody>
                                         <?php
-                                         //if ($sheep !== null) {
-                                        $sheep->Leitura('minhas_compras', "WHERE id_cliente = :id AND (status = 'paid' OR status = 'approved') AND finalizado != 'C' ORDER BY id DESC", "id={$_SESSION['sheep_user']['id']}");
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
+
+                                        $sheep->Leitura(
+                                            'minhas_compras',
+                                            "WHERE id_cliente = :id AND (status = 'paid' OR status = 'approved') AND finalizado != 'C' ORDER BY id DESC",
+                                            "id={$_SESSION['sheep_user']['id']}"
+                                        );
+
                                         $minhasCompras = Formata::Resultado($sheep);
+
                                         if ($minhasCompras) {
                                             foreach ($sheep->getResultado() as $compras) {
                                                 $compras = (object) $compras;
@@ -37,7 +46,10 @@
 
                                                     <td> <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#ver<?= $compras->id ?>" style="margin-right: 50px;"> Ver </a>
                                                         <?php
-                                                        if ($compras->status == 'paid' or $status = 'approved' && $compras->finalizado == 'S') {
+                                                        if (
+                                                            ($compras->status == 'paid' || $compras->status == 'approved')
+                                                            && $compras->finalizado == 'S'
+                                                        ) {
                                                             echo '<span class="alert-success">Aprovado</span>';
                                                         } elseif ($compras->status == 'paid' && $compras->finalizado == 'N') {
                                                             echo '<span class="alert-success">Aprovado</span>';
@@ -73,9 +85,13 @@
         </div>
     </section>
 
-    <!-- INICIO MODAL SUPORTE MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+    <!-- INICIO MODAL --->
     <?php
-    $sheep->Leitura('minhas_compras', "WHERE id_cliente = :id AND status = 'paid' OR  status = 'approved'", "id={$_SESSION['sheep_user']['id']}");
+    $sheep->Leitura(
+        'minhas_compras',
+        "WHERE id_cliente = :id AND (status = 'paid' OR status = 'approved')",
+        "id={$_SESSION['sheep_user']['id']}"
+    );
     $minhasCompras = Formata::Resultado($sheep);
     if ($minhasCompras) {
         foreach ($sheep->getResultado() as $compras) {
@@ -148,7 +164,7 @@
             </div>
     <?php }
     } ?>
-    <!-- FIM MODAL SUPORTE MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+    <!-- FIM MODAL--->
     <?php
     $sheep = null;
     ?>

@@ -49,7 +49,10 @@
                                     <tbody>
 
                                         <?php
-
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
+                                        
                                         $sheep->Leitura('usuarios', " WHERE status = 'c' ORDER BY nome ASC");
                                         if ($sheep->getResultado()) {
                                             foreach ($sheep->getResultado() as $cliente) {

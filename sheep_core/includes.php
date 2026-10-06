@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Arquivo de inclusão geral do sistema.
  * Ele é responsável por carregar as configurações, classes e conexões necessárias para o funcionamento do sistema.
@@ -154,7 +155,7 @@ define('GOOGLE_VERIFY', 'verificador do google');
 
 
 
-// verifica se e http ou https por  ####################
+// verifica se é http ou https por  ####################
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
     //if( isset(filter_input(INPUT_SERVER, 'HTTPS', FILTER_SANITIZE_STRIPPED)) && filter_input(INPUT_SERVER, 'HTTPS', FILTER_SANITIZE_STRIPPED) == 'on' ) {
     $https = 'https://';
@@ -166,8 +167,8 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
 define('HOME', $https . SHEEP_URL);
 define('PASTA_DO_PAINEL', '/sheep_painel/');
 define('PASTA_DO_PAINEL_CLIENTE', '/cliente/');
-define('URL_CAMINHO_PAINEL', HOME . '/' . PASTA_DO_PAINEL);
-define('URL_CAMINHO_PAINEL_CLIENTE', HOME . '/' . PASTA_DO_PAINEL_CLIENTE);
+define('URL_CAMINHO_PAINEL', HOME . PASTA_DO_PAINEL);
+define('URL_CAMINHO_PAINEL_CLIENTE', HOME . PASTA_DO_PAINEL_CLIENTE);
 define('SHEEP_LAYOUT', 'site');
 
 //LOGO DO SITE PARA TEMAS 

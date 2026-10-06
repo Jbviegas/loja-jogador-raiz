@@ -684,8 +684,6 @@ input[type="radio"]:disabled {
 
 .rodape {
     background-color: var(--cor-font-corpo);
-    margin-top: 50px;
-    height: 100%;
 }
 
 .rodape-coluna-3 ul,

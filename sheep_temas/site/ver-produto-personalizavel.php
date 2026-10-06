@@ -64,7 +64,7 @@ endif;
 
                     <input type="radio" id="valor-maior" name="valor_total" value="<?= $valor + 60 ?>" onclick="cliqueiNoCheckBoxCom()">
                     <label for="com">Escrever ou reescrever o Nome e a Frase da foto</label><br>
-                    <h6 style="color:red ;">Atenção, o limite máximo para escrever são de 41 caracteres(nome+frase) ou só a frase ou o nome</h6>
+                    <h6 style="color:red ;">Atenção, o limite máximo para escrever são de 40 caracteres(nome+frase) ou só a frase ou o nome</h6>
                 </div>
 
                 <input type="hidden" name="capa" value="<?= $capa ?>">
@@ -77,12 +77,13 @@ endif;
                 <div>
                     <input
                         type="text"
-                        size="40"
+                        size="50"
                         name="nome_camisa"
                         id="input"
                         class="input-nome"
                         placeholder="Ex: Davi Dias de luta dias de glória"
                         style="display: none;"
+                        value="- -"
                         required>
 
                     <h6 class="personalize" style="display: none;">Não é permitido caracteres especiais('',@,#,$,%,&,?,*,!...)</h6>
@@ -203,19 +204,18 @@ endif;
     </div>
 
     <script>
-
-        document.getElementById("input").addEventListener("input", function() {// evento de entrada no campo de texto
-            this.value = this.value.replace(/[^A-Za-zÀ-ÿ ]/g, "");// permite apenas letras e espaços
+        document.getElementById("input").addEventListener("input", function() { // evento de entrada no campo de texto
+            this.value = this.value.replace(/[^A-Za-zÀ-ÿ ]/g, ""); // permite apenas letras e espaços
         });
 
 
         // Troca de imagem da galeria
-        var produtoImg = document.getElementById("produtoImg");// imagem grande
-        var produtoMiniatura = document.getElementsByClassName("produtoMiniatura");// imagens pequenas
+        var produtoImg = document.getElementById("produtoImg"); // imagem grande
+        var produtoMiniatura = document.getElementsByClassName("produtoMiniatura"); // imagens pequenas
 
-        for (let i = 0; i < produtoMiniatura.length; i++) {// laço de repetição para todas as imagens pequenas
-            produtoMiniatura[i].onclick = function() {// evento de clique na imagem pequena 
-                produtoImg.src = produtoMiniatura[i].src;// troca a imagem grande pela pequena clicada
+        for (let i = 0; i < produtoMiniatura.length; i++) { // laço de repetição para todas as imagens pequenas
+            produtoMiniatura[i].onclick = function() { // evento de clique na imagem pequena 
+                produtoImg.src = produtoMiniatura[i].src; // troca a imagem grande pela pequena clicada
             }
 
         }

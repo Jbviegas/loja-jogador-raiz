@@ -97,7 +97,7 @@
 <footer class="main-footer">
   <div class="footer-left">
     Data <?= date('d/m/Y') ?> - <?= SITENAME ?> - <a href="" data-toggle="modal"
-      data-target="#versaoSheep"> <img src="<?= HOME ?>/img-logo/images/2024/10/icone-loja.png" width="20px" alt="<?= SITENAME ?>">
+      data-target="#versaoSheep"> <img src="<?= HOME ?>uploads/img-logo/images/2024/10/icone-loja.png" width="20px" alt="<?= SITENAME ?>">
   </div>
   <div class="footer-right">
   </div>

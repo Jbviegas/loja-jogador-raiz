@@ -46,6 +46,9 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        if (!$sheep instanceof Ler) {
+                                            $sheep = new Ler();
+                                        }
 
                                         $sheep->Leitura('faturas', "WHERE status = 'waiting' ORDER BY data DESC");
                                         $minhasCompras = Formata::Resultado($sheep);

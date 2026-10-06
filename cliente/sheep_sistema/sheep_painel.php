@@ -1,17 +1,17 @@
 <div class="main-content">
 
-  <!-- INICIO NAVEGAÇÃO MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+  <!-- INICIO NAVEGAÇÃO --->
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="<?= URL_CAMINHO_PAINEL_CLIENTE ?>sheep.php">Inicio</a></li>
     </ol>
   </nav>
-  <!-- FIM NAVEGAÇÃO MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+  <!-- FIM NAVEGAÇÃO --->
 
   <section class="section">
     <div class="section-body">
 
-      <!-- INICIO TABELA  MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA -->
+      <!-- INICIO TABELA   -->
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -25,6 +25,9 @@
 
                   <tbody>
                     <?php
+                    if (!$sheep instanceof Ler) {
+                      $sheep = new Ler();
+                    }
                     $sheep->Leitura('minhas_compras', "WHERE id_cliente = :id ORDER BY id DESC", "id={$_SESSION['sheep_user']['id']}");
                     $minhasCompras = Formata::Resultado($sheep);
                     if ($minhasCompras) {
@@ -132,7 +135,7 @@
     <span style="margin-right: 40px; font-weight: bold; font-size: 20px;">Imagens Enviadas</span><a href="<?= URL_CAMINHO_PAINEL_CLIENTE . FILTROS . "sheep-produtos/imagens_enviadas&token={$_SESSION['timeWT']}" ?>" style="color: red; text-decoration: none;" title="imagens recebidas"> <button style="border-radius: 10px; background: blue; color: white; border: none; padding: 10px;">Ver</button></a></span>
   </div>
 
-  <!-- INICIO MODAL SUPORTE MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+  <!-- INICIO MODAL SUPORTE --->
   <?php
   $sheep->Leitura('minhas_compras', "WHERE id_cliente = :id ", "id={$_SESSION['sheep_user']['id']}");
   $minhasCompras = Formata::Resultado($sheep);
@@ -221,7 +224,7 @@
               </form>
 
 
-              <!-- FIM MODAL SUPORTE MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+              <!-- FIM MODAL SUPORTE --->
               <?php
               $sheep = null;
               ?>
@@ -300,7 +303,7 @@
       </div>
   <?php }
   } ?>
-  <!-- FIM MODAL SUPORTE MAYKONSILVEIRA.COM.BR MAYKON SILVEIRA--->
+  <!-- FIM MODAL SUPORTE --->
   <?php
   $sheep = null;
   ?>
