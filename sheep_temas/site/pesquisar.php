@@ -39,7 +39,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -60,7 +60,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto-jogador/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -82,7 +82,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto-retro/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -104,7 +104,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto-feminino/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -126,7 +126,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto-infantil/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -148,7 +148,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto-treino-inverno/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -170,7 +170,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto-nba/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -191,7 +191,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -213,7 +213,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -235,7 +235,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>
@@ -257,7 +257,7 @@
             <!-- Início Item Produtos em destaque (Card) -->
             <div class="produto-card">
                 <a href="<?= HOME . '/ver-produto/' . $produto->id . '/' . $produto->url ?>" class="pesquisa-produtos">
-                    <img src="<?= HOME ?>//uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
+                    <img src="<?= HOME ?>/uploads/img-produtos/<?= $produto->capa ?>" alt="<?= $produto->titulo ?>"><br>
                     <span class="titulo"><?= $produto->titulo ?></span>
                 </a>
             </div>

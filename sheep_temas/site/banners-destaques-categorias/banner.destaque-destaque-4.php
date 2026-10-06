@@ -30,7 +30,7 @@ if ($bannerDestaque):
 ?>
         <div class="col-6">
             <h2 class="titulo"><span>Feminino</span></h2>
-            <img src="<?= HOME ?>/img-banners/<?= $banner->capa ?>" alt="<?= $banner->titulo_um ?>" class="oferta-img">
+            <img src="<?= HOME ?>/uploads/img-banners/<?= $banner->capa ?>" alt="<?= $banner->titulo_um ?>" class="oferta-img">
             <p><?= $banner->titulo_dois ?></p>
             <h1><?= $banner->titulo_tres ?></h1>
             <smal><?= $banner->titulo_quatro ?></smal>

@@ -5,6 +5,7 @@
 ?>
 
 /loja-jogador-Raiz
-                  /sheep_core -> Module
+                  /sheep_core ->Model + Controller
                   /Sheep_temas -> View
-                  index.php -> Controller
+                  index.php -> Front Controller
+

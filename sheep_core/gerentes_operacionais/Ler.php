@@ -13,8 +13,8 @@ que gerencia a conexão com o banco.*/
 
     //Essa função monta automaticamente a query SQL no formato: SELECT * FROM {tabela} {condição}
     public function Leitura($BD, $SQL = null, $Adicionais = null)
-    {    // Se Adicionais não estiver vazio 
-        if (!empty($Adicionais)):
+    {    
+        if (!empty($Adicionais)):// Se Adicionais não estiver vazio 
             if (is_array($Adicionais)) { // Verifica se Adicionais é um array
                 $this->Locais = $Adicionais; // Se for um array, atribui diretamente a Locais
             } else {

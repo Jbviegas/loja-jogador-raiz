@@ -2,7 +2,7 @@
   <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
       <a href="sheep.php" title="Sheep Framework PHP - Por: MAYKONSILVEIRA.COM.BR ">
-        <img alt="<?= SITENAME ?>" src="<?= HOME ?>/img-logo/images/2024/13/nova-logo-transparente.png" class="header-logo" style="margin-top:5px; width:70%; height: auto;" /> <span class="logo-name"></span>
+        <img alt="<?= SITENAME ?>" src="<?= HOME ?>/uploads/img-logo/images/2024/13/nova-logo-transparente.png" class="header-logo" style="margin-top:5px; width:70%; height: auto;"></span>
       </a>
     </div>
     <ul class="sidebar-menu">
